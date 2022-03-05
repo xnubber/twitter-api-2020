@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express')
 const passport = require('./config/passport')
+const passportJwtSocketIo = require('passport-jwt.socketio')
 const helpers = require('./_helpers')
 const { apis } = require('./routes')
 const cors = require('cors')
@@ -21,6 +22,16 @@ app.use((req, res, next) => {
 })
 app.get('/', (req, res) => res.send('Hello World!'))
 app.use('/api', apis)
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+
+const server = require('http').createServer(app)
+const io = require('socket.io')(server)
+const webSocket = require('./config/websocket')
+const onConnction = socket => {
+  webSocket(io, socket)
+}
+
+io.on('connection', onConnction)
+
+server.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 module.exports = app
