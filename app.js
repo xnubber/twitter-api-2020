@@ -3,7 +3,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 const express = require('express')
 const passport = require('./config/passport')
-const passportJwtSocketIo = require('passport-jwt.socketio')
 const helpers = require('./_helpers')
 const { apis } = require('./routes')
 const cors = require('cors')
@@ -26,10 +25,14 @@ app.use('/api', apis)
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 const webSocket = require('./config/websocket')
+const socketIoMiddleware = require('./middleware/socketIo')
+const { authenticated, authenticatedUser } = require('./middleware/apiAuth')
 const onConnction = socket => {
   webSocket(io, socket)
 }
 
+io.use(socketIoMiddleware(authenticated))
+io.use(socketIoMiddleware(authenticatedUser))
 io.on('connection', onConnction)
 
 server.listen(port, () => console.log(`Example app listening on port ${port}!`))

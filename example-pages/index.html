@@ -13,7 +13,7 @@
 <body>
   <div class="countainer-fluid row d-flex mx-auto flex-column align-items-center">
     <div class="col-md-6 p-0">
-      <div id="messages" class="mb-2 px-2 py-3" style="height:90vh;background-color: #eee;">
+      <div id="messages" class="mb-2 px-2 py-3" style="height:89vh;background-color: #eee; overflow-y: auto;">
         <!-- messages -->
       </div>
 
@@ -32,8 +32,13 @@
     crossorigin="anonymous"></script>
   <script src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script>
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyMUBleGFtcGxlLmNvbSIsIm5hbWUiOiJ1c2Vy6Zuj5rOiIiwiYWNjb3VudCI6IlVzZXIxIiwiY292ZXIiOiJodHRwczovL2kuaW1ndXIuY29tL2RmcERqQk4uanBnIiwiYXZhdGFyIjoiaHR0cHM6Ly9pLmltZ3VyLmNvbS96WWRkVXM4LnBuZyIsInJvbGUiOiJ1c2VyIiwiaW50cm9kdWN0aW9uIjoi6ZujIiwiY3JlYXRlZEF0IjoiMjAyMi0wMi0yNlQwNTo1Njo0Ny4wMDBaIiwidXBkYXRlZEF0IjoiMjAyMi0wMi0yNlQwNzo1MzoxMC4wMDBaIiwiaWF0IjoxNjQ2NTQ1MjAwLCJleHAiOjE2NDY2MzE2MDB9.cTbFpvb6amrknD3cBG8kfHlvgYeMp2VWoNk9oqzZfn4'
+
     const socket = io('http://localhost:3000', {
-      transports: ['websocket']
+      transports: ['websocket'],
+      auth: {
+        authorization: `Bearer ${token}`
+      }
     })
 
     const messages = document.getElementById('messages')
